@@ -1,0 +1,145 @@
+@use "./scss/index" as *;
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
+
+.password-generator {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: 100%;
+  max-width: 25rem;
+  justify-self: center;
+  padding: 1.5rem 1rem;
+  gap: 2rem;
+  background-color: $bg-secondary-clr;
+
+  &__header {
+    justify-self: center;
+    align-self: end;
+
+    h1 {
+      margin-bottom: 2rem;
+      color: $header-clr;
+    }
+  }
+
+  &__wrapper {
+    flex-grow: 1;
+  }
+}
+
+.generated-result {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:after {
+    content: "";
+    position: absolute;
+    background-color: $bg-primary-clr;
+  }
+
+  &__password {
+    color: $password-clr;
+  }
+
+  &__copy-btn {
+    font-size: 1.5rem;
+    color: $primary-clr;
+    cursor: pointer;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__label {
+    cursor: pointer;
+
+    &:hover {
+      color: $primary-clr;
+    }
+
+    &--length-wrapper {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: auto;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  &__password-length {
+    grid-column: 1 / 3;
+    cursor: pointer;
+  }
+
+  &__password-params {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__length-value {
+    color: $primary-clr;
+    font-size: 2rem;
+  }
+
+  &__checkbox {
+  }
+
+  &__footer {
+  }
+
+  &__submit-btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    gap: 1rem;
+    color: $primary-clr;
+    border: 2px solid $primary-clr;
+    background-color: transparent;
+    cursor: pointer;
+  }
+}
+
+.password-strength {
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: $bg-primary-clr;
+  }
+
+  &__description {
+    color: $password-clr;
+    font-weight: bolder;
+  }
+
+  &__value-wrapper {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  &__security-value {
+  }
+
+  &__value {
+    display: inline-block;
+    height: 100%;
+    width: 0.5rem;
+    border: 1px solid #fff;
+  }
+}
