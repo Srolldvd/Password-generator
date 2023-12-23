@@ -175,39 +175,75 @@ module.hot.accept(reloadCSS);
 },{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/ts/getPasswordParams.ts":[function(require,module,exports) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.params = exports.formElem = void 0;
 var passwordResultElem = document.querySelector("[data-password-result]");
 var copyBtnElem = passwordResultElem === null || passwordResultElem === void 0 ? void 0 : passwordResultElem.previousElementSibling;
-var formElem = document.querySelector("[data-password-form]");
-var passwordLenghtElem = formElem === null || formElem === void 0 ? void 0 : formElem.querySelector("[data-password-length-inp]");
-var passwordLenghtValueElem = formElem === null || formElem === void 0 ? void 0 : formElem.querySelector("[data-password-length-value]");
-var passwordStrengthContainerElem = formElem === null || formElem === void 0 ? void 0 : formElem.querySelectorAll("[data-password-strength]");
-var params = {};
-var passwordParamsElems = formElem === null || formElem === void 0 ? void 0 : formElem.querySelectorAll("[data-password-param]");
-passwordParamsElems.forEach(function (par) {
-  if (par instanceof HTMLElement) {
-    if (par.dataset.passwordParam === "lowercase-letters") {
-      params["lowercase"] = par;
-    } else if (par.dataset.passwordParam === "uppercase-letters") {
-      params["uppercase"] = par;
-    } else if (par.dataset.passwordParam === "numbers") {
-      params["number"] = par;
-    } else if (par.dataset.passwordParam === "symbols") {
-      params["symbol"] = par;
-    }
-  }
-});
-params;
-console.log(params.lowercase);
-console.log(params.uppercase);
-console.log(params.number);
-console.log(params.symbol);
+exports.formElem = document.querySelector("[data-password-form]");
+var passwordLenghtElem = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelector("[data-password-length-inp]");
+var passwordLenghtValueElem = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelector("[data-password-length-value]");
+var passwordStrengthContainerElem = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelectorAll("[data-password-strength]");
+var params = {
+  lowercase: exports.formElem.querySelector("[data-lowercase-letters]"),
+  uppercase: exports.formElem.querySelector("[data-uppercase-letters]"),
+  numbers: exports.formElem.querySelector("[data-numbers]"),
+  symbols: exports.formElem.querySelector("[data-symbols]")
+};
+exports.params = params;
+var passwordParamsElems = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelectorAll("[data-password-param]");
 },{}],"src/ts/generatePassword.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var paswordGenerator = {};
+var getPasswordParams_1 = require("./getPasswordParams");
+console.log(getPasswordParams_1.params);
+var checkedParams = Object.values(getPasswordParams_1.params).filter(function (param) {
+  return param.checked;
+});
+getPasswordParams_1.formElem.addEventListener("submit", function (e) {
+  e.preventDefault();
+  var generatedPassword = "";
+  var checkedParams = Object.values(getPasswordParams_1.params).filter(function (param) {
+    return param.checked;
+  });
+  console.log(checkedParams);
+  if (!checkedParams.length) {
+    return alert("You need to include at least 1 parametr in your generated password");
+  }
+  var arr = [];
+  var abc = function abc() {
+    return checkedParams.map(function (param) {
+      if (param.id === "uppercase-letters") {
+        arr.push(getUpperCaseLetter());
+      } else if (param.id === "lowercase-letters") {
+        arr.push(getLowerCaseLetter());
+      } else if (param.id === "numbers") {
+        arr.push(getNumber());
+      } else if (param.id === "symbols") {
+        arr.push(getSymbol());
+      }
+    });
+  };
+  var value = Math.ceil(19 / checkedParams.length);
+  for (var i = 0; i < value; i++) {
+    abc();
+  }
+  function shuffleArray(array) {
+    var _a;
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      _a = [array[j], array[i]], array[i] = _a[0], array[j] = _a[1];
+    }
+  }
+  shuffleArray(arr);
+  arr = arr.join("").slice(0, 19);
+  console.log(arr);
+  console.log(arr.length);
+});
 var getUpperCaseLetter = function getUpperCaseLetter() {
   return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
 };
@@ -220,7 +256,7 @@ var getNumber = function getNumber() {
 var getSymbol = function getSymbol() {
   return String.fromCharCode(Math.floor(Math.random() * 15) + 33);
 };
-},{}],"src/index.ts":[function(require,module,exports) {
+},{"./getPasswordParams":"src/ts/getPasswordParams.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

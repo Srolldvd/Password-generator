@@ -1,28 +1,40 @@
 const passwordResultElem = document.querySelector(
-  "[data-password-result]"
+  "[data-password-result]",
 ) as HTMLSpanElement;
 
 const copyBtnElem = passwordResultElem?.previousElementSibling;
-const formElem = document.querySelector("[data-password-form]");
+export const formElem = document.querySelector("[data-password-form]")!;
 
 const passwordLenghtElem = formElem?.querySelector(
-  "[data-password-length-inp]"
+  "[data-password-length-inp]",
 );
 const passwordLenghtValueElem = formElem?.querySelector(
-  "[data-password-length-value]"
+  "[data-password-length-value]",
 );
 
 const passwordStrengthContainerElem = formElem?.querySelectorAll(
-  "[data-password-strength]"
-);
-
-let params: any = {};
-
-const passwordParamsElems = formElem?.querySelectorAll(
-  "[data-password-param]"
+  "[data-password-strength]",
 )!;
 
-passwordParamsElems.forEach((par) => {
+interface params {
+  lowercase: HTMLInputElement;
+  uppercase: HTMLInputElement;
+  numbers: HTMLInputElement;
+  symbols: HTMLInputElement;
+}
+
+const params: params = {
+  lowercase: formElem.querySelector("[data-lowercase-letters]")!,
+  uppercase: formElem.querySelector("[data-uppercase-letters]")!,
+  numbers: formElem.querySelector("[data-numbers]")!,
+  symbols: formElem.querySelector("[data-symbols]")!,
+};
+
+const passwordParamsElems = formElem?.querySelectorAll(
+  "[data-password-param]",
+)!;
+
+/* passwordParamsElems.forEach((par: HTMLElement) => {
   if (par instanceof HTMLElement) {
     if (par.dataset.passwordParam === "lowercase-letters") {
       params["lowercase"] = par;
@@ -34,11 +46,6 @@ passwordParamsElems.forEach((par) => {
       params["symbol"] = par;
     }
   }
-});
+}); */
 
-export params
-
-console.log(params.lowercase);
-console.log(params.uppercase);
-console.log(params.number);
-console.log(params.symbol);
+export { params };
