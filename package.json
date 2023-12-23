@@ -12,6 +12,7 @@
     "scss": "0.2.4"
   },
   "devDependencies": {
+    "sass": "^1.69.5",
     "typescript": "4.4.4"
   },
   "resolutions": {
