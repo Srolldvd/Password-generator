@@ -10,7 +10,7 @@
     <main class="password-generator">
       <section>
         <div class="generated-result">
-          <span class="generated-result__password" data-password-result
+          <span class="generated-result__password" id="generated-result"
             >Result password</span
           >
           <button class="generated-result__copy-btn" data-password-copy>
@@ -19,7 +19,7 @@
         </div>
       </section>
       <section class="password-generator__wrapper">
-        <form class="password-form" data-password-form>
+        <form class="password-form" id="password-form">
           <fieldset class="password-form__password-params">
             <label
               for="password-length"
@@ -29,14 +29,16 @@
               <span
                 class="password-form__length-value"
                 data-password-length-value
-                >0</span
+                >4</span
               >
               <input
                 type="range"
                 id="password-length"
                 name="password-length"
                 class="password-form__password-length"
-                value="0"
+                value="4"
+                min="4"
+                max="20"
                 data-password-length-inp
               />
             </label>

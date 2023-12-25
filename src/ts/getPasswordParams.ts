@@ -3,11 +3,14 @@ const passwordResultElem = document.querySelector(
 ) as HTMLSpanElement;
 
 const copyBtnElem = passwordResultElem?.previousElementSibling;
-export const formElem = document.querySelector("[data-password-form]")!;
 
-const passwordLenghtElem = formElem?.querySelector(
+export const formElem = document.getElementById(
+  "password-form",
+) as HTMLFormElement;
+
+export const passwordLenghtElem = formElem?.querySelector(
   "[data-password-length-inp]",
-);
+) as HTMLInputElement;
 const passwordLenghtValueElem = formElem?.querySelector(
   "[data-password-length-value]",
 );
@@ -16,36 +19,21 @@ const passwordStrengthContainerElem = formElem?.querySelectorAll(
   "[data-password-strength]",
 )!;
 
-interface params {
-  lowercase: HTMLInputElement;
-  uppercase: HTMLInputElement;
-  numbers: HTMLInputElement;
-  symbols: HTMLInputElement;
-}
+passwordLenghtElem?.addEventListener("input", (e) => {
+  const target = e.target as HTMLInputElement;
+  if (passwordLenghtElem.previousElementSibling == null) return;
+  passwordLenghtElem.previousElementSibling.textContent = target.value;
+});
 
-const params: params = {
-  lowercase: formElem.querySelector("[data-lowercase-letters]")!,
-  uppercase: formElem.querySelector("[data-uppercase-letters]")!,
-  numbers: formElem.querySelector("[data-numbers]")!,
-  symbols: formElem.querySelector("[data-symbols]")!,
+const params = {
+  lowercase: document.getElementById("lowercase-letters") as HTMLInputElement,
+  uppercase: document.getElementById("uppercase-letters") as HTMLInputElement,
+  numbers: document.getElementById("numbers") as HTMLInputElement,
+  symbols: document.getElementById("symbols") as HTMLInputElement,
 };
 
 const passwordParamsElems = formElem?.querySelectorAll(
   "[data-password-param]",
 )!;
-
-/* passwordParamsElems.forEach((par: HTMLElement) => {
-  if (par instanceof HTMLElement) {
-    if (par.dataset.passwordParam === "lowercase-letters") {
-      params["lowercase"] = par;
-    } else if (par.dataset.passwordParam === "uppercase-letters") {
-      params["uppercase"] = par;
-    } else if (par.dataset.passwordParam === "numbers") {
-      params["number"] = par;
-    } else if (par.dataset.passwordParam === "symbols") {
-      params["symbol"] = par;
-    }
-  }
-}); */
 
 export { params };

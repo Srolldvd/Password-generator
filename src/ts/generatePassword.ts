@@ -1,45 +1,44 @@
-import { params, formElem } from "./getPasswordParams";
+import { params, formElem, passwordLenghtElem } from "./getPasswordParams";
 
-console.log(params);
-
-const checkedParams = Object.values(params).filter((param) => {
-  return param.checked;
-});
-
-formElem.addEventListener("submit", (e: Event) => {
+formElem.addEventListener("submit", (e) => {
   e.preventDefault();
-  let generatedPassword = "";
-  const checkedParams = Object.values(params).filter((param) => {
-    return param.checked;
-  });
-
-  console.log(checkedParams);
-
+  const checkedParams = Object.values(params).filter((param) => param.checked);
   if (!checkedParams.length) {
     return alert(
       "You need to include at least 1 parametr in your generated password",
     );
   }
 
-  let arr: any = [];
+  let arr: string[] = [];
+  let generatedPassword: string = "";
+  const passwordResultElem = document.getElementById(
+    "generated-result",
+  ) as HTMLSpanElement;
 
   const abc = () => {
     return checkedParams.map((param) => {
-      if (param.id === "uppercase-letters") {
-        arr.push(getUpperCaseLetter());
-      } else if (param.id === "lowercase-letters") {
-        arr.push(getLowerCaseLetter());
-      } else if (param.id === "numbers") {
-        arr.push(getNumber());
-      } else if (param.id === "symbols") {
-        arr.push(getSymbol());
+      switch (param.id) {
+        case "uppercase-letters":
+          arr.push(getUpperCaseLetter());
+          break;
+        case "lowercase-letters":
+          arr.push(getLowerCaseLetter());
+          break;
+        case "numbers":
+          arr.push(getNumber());
+          break;
+        case "symbols":
+          arr.push(getSymbol());
+          break;
       }
     });
   };
 
-  let value = Math.ceil(19 / checkedParams.length);
+  let value: any = Math.ceil(
+    parseInt(passwordLenghtElem.value) / checkedParams.length,
+  );
 
-  for (let i = 0; i < value; i++) {
+  for (let i = 0; i <= value; i++) {
     abc();
   }
 
@@ -51,24 +50,28 @@ formElem.addEventListener("submit", (e: Event) => {
   }
 
   shuffleArray(arr);
-  arr = arr.join("").slice(0, 19);
+  generatedPassword = arr.join("").slice(0, parseInt(passwordLenghtElem.value));
 
-  console.log(arr);
-  console.log(arr.length);
+  printPassword(passwordResultElem, generatedPassword);
 });
 
-const getUpperCaseLetter: () => String = () => {
+const getUpperCaseLetter: () => string = () => {
   return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
 };
 
-const getLowerCaseLetter: () => String = () => {
+const getLowerCaseLetter: () => string = () => {
   return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
 };
 
-const getNumber: () => String = () => {
+const getNumber: () => string = () => {
   return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
 };
 
-const getSymbol: () => String = () => {
+const getSymbol: () => string = () => {
   return String.fromCharCode(Math.floor(Math.random() * 15) + 33);
+};
+
+const printPassword = (element: HTMLSpanElement, password: string) => {
+  element.textContent = password;
+  element.classList.add("generated");
 };
