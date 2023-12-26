@@ -205,6 +205,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var getPasswordParams_1 = require("./getPasswordParams");
+var resultWrapperElem = document.getElementById("result-wrapper");
+var passwordResultElem = document.getElementById("generated-result");
 getPasswordParams_1.formElem.addEventListener("submit", function (e) {
   e.preventDefault();
   var checkedParams = Object.values(getPasswordParams_1.params).filter(function (param) {
@@ -215,7 +217,6 @@ getPasswordParams_1.formElem.addEventListener("submit", function (e) {
   }
   var arr = [];
   var generatedPassword = "";
-  var passwordResultElem = document.getElementById("generated-result");
   var abc = function abc() {
     return checkedParams.map(function (param) {
       switch (param.id) {
@@ -262,9 +263,27 @@ var getSymbol = function getSymbol() {
   return String.fromCharCode(Math.floor(Math.random() * 15) + 33);
 };
 var printPassword = function printPassword(element, password) {
-  element.textContent = password;
+  element.value = password;
   element.classList.add("generated");
 };
+var copyPassword = function copyPassword(element) {
+  element.select();
+  document.execCommand("copy");
+};
+var passwordEdit = function passwordEdit(element) {
+  element.removeAttribute("readonly");
+  element.nextElementSibling.innerHTML = "\n  <button class=\"generated-result__icon\" data-password-check>\n    <i class=\"fa-solid fa-check\"></i>\n  </button>\n  ";
+};
+var passwordCheck = function passwordCheck(element) {
+  element.setAttribute("readonly", "readonly");
+  element.nextElementSibling.innerHTML = "\n  <button class=\"generated-result__icon\" data-password-copy>\n    <i class=\"fa-solid fa-copy\"></i>\n  </button>\n  <button class=\"generated-result__icon\" data-password-edit>\n    <i class=\"fa-regular fa-pen-to-square\"></i>\n  </button>\n  ";
+};
+resultWrapperElem === null || resultWrapperElem === void 0 ? void 0 : resultWrapperElem.addEventListener("click", function (e) {
+  var element = e.target;
+  element.closest("[data-password-edit]") ? passwordEdit(passwordResultElem) : null;
+  element.closest("[data-password-copy]") ? copyPassword(passwordResultElem) : null;
+  element.closest("[data-password-check]") ? passwordCheck(passwordResultElem) : null;
+});
 },{"./getPasswordParams":"src/ts/getPasswordParams.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 

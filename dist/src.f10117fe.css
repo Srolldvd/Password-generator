@@ -22,7 +22,9 @@ button {
   outline: none;
 }
 
-button {
+button,
+input {
+  font-family: inherit;
   background-color: transparent;
 }
 
@@ -31,10 +33,10 @@ button {
   flex-direction: column;
   height: fit-content;
   width: 100%;
-  max-width: 25rem;
+  max-width: 27.5rem;
   justify-self: center;
-  padding: 1.5rem 1rem;
-  gap: 2rem;
+  padding: 1.5rem;
+  gap: 1rem;
   background-color: #292734;
 }
 .password-generator__header {
@@ -54,21 +56,37 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 2.2rem;
 }
 .generated-result:after {
   content: "";
+  display: block;
   position: absolute;
+  height: 1rem;
+  left: -1.6rem;
+  right: -1.6rem;
+  bottom: 0;
   background-color: #121117;
 }
 .generated-result__password {
+  font-size: 1.5rem;
   color: #53515a;
+  border: none;
+  outline: none;
+  background-color: transparent;
 }
-.generated-result__copy-btn {
+.generated-result__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.generated-result__icon {
   font-size: 1.5rem;
   color: #a4ffaf;
   cursor: pointer;
+  transition: color 150ms ease-in;
 }
-.generated-result__copy-btn:hover {
+.generated-result__icon:hover {
   color: #fff;
 }
 
@@ -112,11 +130,18 @@ button {
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  gap: 1rem;
-  color: #a4ffaf;
+  gap: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
   border: 2px solid #a4ffaf;
-  background-color: transparent;
+  color: #292734;
+  background-color: #a4ffaf;
+  transition: color 150ms ease-in, background-color 150ms ease-in;
   cursor: pointer;
+}
+.password-form__submit-btn:hover {
+  color: #a4ffaf;
+  background-color: #292734;
 }
 
 .password-strength__wrapper {

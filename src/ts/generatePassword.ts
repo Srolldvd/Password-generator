@@ -1,5 +1,10 @@
 import { params, formElem, passwordLenghtElem } from "./getPasswordParams";
 
+const resultWrapperElem = document.getElementById("result-wrapper");
+const passwordResultElem = document.getElementById(
+  "generated-result",
+) as HTMLInputElement;
+
 formElem.addEventListener("submit", (e) => {
   e.preventDefault();
   const checkedParams = Object.values(params).filter((param) => param.checked);
@@ -11,9 +16,6 @@ formElem.addEventListener("submit", (e) => {
 
   let arr: string[] = [];
   let generatedPassword: string = "";
-  const passwordResultElem = document.getElementById(
-    "generated-result",
-  ) as HTMLSpanElement;
 
   const abc = () => {
     return checkedParams.map((param) => {
@@ -71,7 +73,46 @@ const getSymbol: () => string = () => {
   return String.fromCharCode(Math.floor(Math.random() * 15) + 33);
 };
 
-const printPassword = (element: HTMLSpanElement, password: string) => {
-  element.textContent = password;
+const printPassword = (element: HTMLInputElement, password: string) => {
+  element.value = password;
   element.classList.add("generated");
 };
+
+const copyPassword = (element: HTMLInputElement) => {
+  element.select();
+  document.execCommand("copy");
+};
+
+const passwordEdit = (element: HTMLInputElement) => {
+  element.removeAttribute("readonly");
+  element.nextElementSibling.innerHTML = `
+  <button class="generated-result__icon" data-password-check>
+    <i class="fa-solid fa-check"></i>
+  </button>
+  `;
+};
+
+const passwordCheck = (element: HTMLInputElement) => {
+  element.setAttribute("readonly", "readonly");
+  element.nextElementSibling.innerHTML = `
+  <button class="generated-result__icon" data-password-copy>
+    <i class="fa-solid fa-copy"></i>
+  </button>
+  <button class="generated-result__icon" data-password-edit>
+    <i class="fa-regular fa-pen-to-square"></i>
+  </button>
+  `;
+};
+
+resultWrapperElem?.addEventListener("click", (e) => {
+  const element = e.target;
+  element.closest("[data-password-edit]")
+    ? passwordEdit(passwordResultElem)
+    : null;
+  element.closest("[data-password-copy]")
+    ? copyPassword(passwordResultElem)
+    : null;
+  element.closest("[data-password-check]")
+    ? passwordCheck(passwordResultElem)
+    : null;
+});

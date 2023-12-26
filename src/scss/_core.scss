@@ -23,6 +23,8 @@ button {
   outline: none;
 }
 
-button {
+button,
+input {
+  font-family: inherit;
   background-color: transparent;
 }

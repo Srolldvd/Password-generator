@@ -6,10 +6,10 @@
   flex-direction: column;
   height: fit-content;
   width: 100%;
-  max-width: 25rem;
+  max-width: 27.5rem;
   justify-self: center;
-  padding: 1.5rem 1rem;
-  gap: 2rem;
+  padding: 1.5rem;
+  gap: 1rem;
   background-color: $bg-secondary-clr;
 
   &__header {
@@ -32,21 +32,38 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 2.2rem;
 
   &:after {
     content: "";
+    display: block;
     position: absolute;
+    height: 1rem;
+    left: -1.6rem;
+    right: -1.6rem;
+    bottom: 0;
     background-color: $bg-primary-clr;
   }
 
   &__password {
+    font-size: 1.5rem;
     color: $password-clr;
+    border: none;
+    outline: none;
+    background-color: transparent;
   }
 
-  &__copy-btn {
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__icon {
     font-size: 1.5rem;
     color: $primary-clr;
     cursor: pointer;
+    transition: color 150ms ease-in;
 
     &:hover {
       color: #fff;
@@ -107,11 +124,21 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    gap: 1rem;
-    color: $primary-clr;
+    gap: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
     border: 2px solid $primary-clr;
-    background-color: transparent;
+    color: $bg-secondary-clr;
+    background-color: $primary-clr;
+    transition:
+      color 150ms ease-in,
+      background-color 150ms ease-in;
     cursor: pointer;
+
+    &:hover {
+      color: $primary-clr;
+      background-color: $bg-secondary-clr;
+    }
   }
 }
 

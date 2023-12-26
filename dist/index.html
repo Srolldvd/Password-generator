@@ -9,11 +9,16 @@
     </header>
     <main class="password-generator">
       <section>
-        <div class="generated-result">
-          <span class="generated-result__password" id="generated-result">Result password</span>
-          <button class="generated-result__copy-btn" data-password-copy="">
-            <i class="fa-solid fa-copy"></i>
-          </button>
+        <div class="generated-result" id="result-wrapper">
+            <input type="text" value="Result Password" id="generated-result" class="generated-result__password" aria-label="Password" minlength="4" maxlength="20" readonly="readonly">
+            <div class="generated-result__wrapper">
+              <button class="generated-result__icon" data-password-edit="">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+              <button class="generated-result__icon" data-password-copy="">
+                <i class="fa-solid fa-copy"></i>
+              </button>
+          </div>
         </div>
       </section>
       <section class="password-generator__wrapper">
