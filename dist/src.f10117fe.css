@@ -28,29 +28,6 @@ input {
   background-color: transparent;
 }
 
-.password-generator {
-  display: flex;
-  flex-direction: column;
-  height: fit-content;
-  width: 100%;
-  max-width: 27.5rem;
-  justify-self: center;
-  padding: 1.5rem;
-  gap: 1rem;
-  background-color: #292734;
-}
-.password-generator__header {
-  justify-self: center;
-  align-self: end;
-}
-.password-generator__header h1 {
-  margin-bottom: 2rem;
-  color: #726f7e;
-}
-.password-generator__wrapper {
-  flex-grow: 1;
-}
-
 .generated-result {
   position: relative;
   display: flex;
@@ -69,11 +46,20 @@ input {
   background-color: #121117;
 }
 .generated-result__password {
+  width: 100%;
+  padding-right: 1rem;
   font-size: 1.5rem;
+  text-overflow: ellipsis;
   color: #53515a;
   border: none;
   outline: none;
   background-color: transparent;
+}
+.generated-result__password.generated {
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  user-select: all;
 }
 .generated-result__wrapper {
   display: flex;
@@ -96,6 +82,9 @@ input {
   gap: 2rem;
 }
 .password-form__label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   cursor: pointer;
 }
 .password-form__label:hover {
@@ -105,7 +94,8 @@ input {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 0.5rem;
+  margin-bottom: 1rem;
+  gap: 1rem;
   cursor: auto;
 }
 .password-form__label--length-wrapper:hover {
@@ -123,6 +113,11 @@ input {
 .password-form__length-value {
   color: #a4ffaf;
   font-size: 2rem;
+}
+.password-form__checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #a4ffaf;
 }
 .password-form__submit-btn {
   display: flex;
@@ -142,27 +137,6 @@ input {
 .password-form__submit-btn:hover {
   color: #a4ffaf;
   background-color: #292734;
-}
-
-.password-strength__wrapper {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  background-color: #121117;
-}
-.password-strength__description {
-  color: #53515a;
-  font-weight: bolder;
-}
-.password-strength__value-wrapper {
-  display: flex;
-  gap: 0.25rem;
-}
-.password-strength__value {
-  display: inline-block;
-  height: 100%;
-  width: 0.5rem;
-  border: 1px solid #fff;
 }
 
 /********** Range Input Styles **********/
@@ -230,10 +204,48 @@ input[type=range]:focus::-moz-range-thumb {
   outline-offset: 0.125rem;
 }
 
-.generated {
-  font-size: 1.5rem;
-  color: #fff;
-  user-select: all;
+.password-generator {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: 100%;
+  max-width: 27.5rem;
+  justify-self: center;
+  padding: 1.5rem;
+  gap: 1rem;
+  background-color: #292734;
+}
+.password-generator__header {
+  justify-self: center;
+  align-self: end;
+}
+.password-generator__header h1 {
+  margin-bottom: 2rem;
+  color: #726f7e;
+}
+.password-generator__wrapper {
+  flex-grow: 1;
+}
+
+.password-strength__wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #121117;
+}
+.password-strength__description {
+  color: #53515a;
+  font-weight: bolder;
+}
+.password-strength__value-wrapper {
+  display: flex;
+  gap: 0.25rem;
+}
+.password-strength__value {
+  display: inline-block;
+  height: 100%;
+  width: 0.5rem;
+  border: 1px solid #fff;
 }
 
 /*# sourceMappingURL=/src.f10117fe.css.map */
