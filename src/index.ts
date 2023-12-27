@@ -1,5 +1,4 @@
 import "./main.scss";
-import "./ts/getPasswordParams";
-import "./ts/generatePassword";
+import "./ts/events";
 
 //https://net-comber.com/charset.html

@@ -172,84 +172,177 @@ module.exports = reloadCSS;
 var reloadCSS = require('_css_loader');
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/ts/getPasswordParams.ts":[function(require,module,exports) {
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/ts/handlePassword.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.params = exports.passwordLenghtElem = exports.formElem = void 0;
-var passwordResultElem = document.querySelector("[data-password-result]");
-var copyBtnElem = passwordResultElem === null || passwordResultElem === void 0 ? void 0 : passwordResultElem.previousElementSibling;
-exports.formElem = document.getElementById("password-form");
-exports.passwordLenghtElem = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelector("[data-password-length-inp]");
-var passwordLenghtValueElem = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelector("[data-password-length-value]");
-var passwordStrengthContainerElem = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelectorAll("[data-password-strength]");
-exports.passwordLenghtElem === null || exports.passwordLenghtElem === void 0 ? void 0 : exports.passwordLenghtElem.addEventListener("input", function (e) {
-  var target = e.target;
-  if (exports.passwordLenghtElem.previousElementSibling == null) return;
-  exports.passwordLenghtElem.previousElementSibling.textContent = target.value;
+exports.shufflePassword = exports.passwordCheck = exports.passwordEdit = exports.copyPassword = exports.printPassword = void 0;
+var printPassword = function printPassword(element, password) {
+  element.value = password;
+  element.classList.add("generated");
+};
+exports.printPassword = printPassword;
+var copyPassword = function copyPassword(element) {
+  element.select();
+  document.execCommand("copy");
+};
+exports.copyPassword = copyPassword;
+var passwordEdit = function passwordEdit(element) {
+  element.removeAttribute("readonly");
+  element.focus();
+  if (!element.nextElementSibling) return;
+  element.nextElementSibling.innerHTML = "\n    <button class=\"generated-result__icon\" data-password-check>\n      <i class=\"fa-solid fa-check\"></i>\n    </button>\n    ";
+};
+exports.passwordEdit = passwordEdit;
+var passwordCheck = function passwordCheck(element) {
+  element.setAttribute("readonly", "readonly");
+  if (!element.nextElementSibling) return;
+  element.nextElementSibling.innerHTML = "\n    <button class=\"generated-result__icon\" data-password-copy>\n      <i class=\"fa-solid fa-copy\"></i>\n    </button>\n    <button class=\"generated-result__icon\" data-password-edit>\n      <i class=\"fa-regular fa-pen-to-square\"></i>\n    </button>\n    ";
+};
+exports.passwordCheck = passwordCheck;
+var shufflePassword = function shufflePassword(array) {
+  var _a;
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    _a = [array[j], array[i]], array[i] = _a[0], array[j] = _a[1];
+  }
+};
+exports.shufflePassword = shufflePassword;
+},{}],"src/ts/getPasswordParams.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
-var params = {
+exports.getPasswordParams = void 0;
+exports.getPasswordParams = {
   lowercase: document.getElementById("lowercase-letters"),
   uppercase: document.getElementById("uppercase-letters"),
   numbers: document.getElementById("numbers"),
   symbols: document.getElementById("symbols")
 };
-exports.params = params;
-var passwordParamsElems = exports.formElem === null || exports.formElem === void 0 ? void 0 : exports.formElem.querySelectorAll("[data-password-param]");
-},{}],"src/ts/generatePassword.ts":[function(require,module,exports) {
+},{}],"src/ts/calculatePasswordStrength.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var getPasswordParams_1 = require("./getPasswordParams");
-var resultWrapperElem = document.getElementById("result-wrapper");
-var passwordResultElem = document.getElementById("generated-result");
-getPasswordParams_1.formElem.addEventListener("submit", function (e) {
-  e.preventDefault();
-  var checkedParams = Object.values(getPasswordParams_1.params).filter(function (param) {
-    return param.checked;
-  });
-  if (!checkedParams.length) {
-    return alert("You need to include at least 1 parametr in your generated password");
+exports.calculatePasswordStrength = void 0;
+var passwordStrengthLevels = {
+  weak: "Weak",
+  medium: "Medium",
+  strong: "Strong",
+  veryStrong: "Very Strong"
+};
+var calculatePasswordStrength = function calculatePasswordStrength(element, pointElements, password, passwordParams) {
+  var passwordLength = password.length;
+  var passwordParamsLength = passwordParams.length;
+  var passwordScore = 0;
+  for (var i = 0; i <= passwordParamsLength; i++) {
+    passwordScore += 3;
   }
-  var arr = [];
+  for (var j = 0; j <= passwordLength; j++) {
+    passwordScore += 5;
+  }
+  passwordScore = Math.ceil(passwordScore);
+  pointElements.forEach(function (element) {
+    return element.style.backgroundColor = "transparent";
+  });
+  if (passwordScore <= 50) {
+    element.textContent = passwordStrengthLevels.weak;
+    pointElements.forEach(function (element, index) {
+      return index < 1 && (element.style.backgroundColor = "gold");
+    });
+  } else if (passwordScore < 65) {
+    element.textContent = passwordStrengthLevels.medium;
+    pointElements.forEach(function (element, index) {
+      return index < 2 && (element.style.backgroundColor = "gold");
+    });
+  } else if (passwordScore <= 80) {
+    element.textContent = passwordStrengthLevels.strong;
+    pointElements.forEach(function (element, index) {
+      return index < 3 && (element.style.backgroundColor = "gold");
+    });
+  } else if (passwordScore > 80) {
+    element.textContent = passwordStrengthLevels.veryStrong;
+    pointElements.forEach(function (element, index) {
+      return index < 4 && (element.style.backgroundColor = "gold");
+    });
+  }
+};
+exports.calculatePasswordStrength = calculatePasswordStrength;
+},{}],"src/ts/generatePassword.ts":[function(require,module,exports) {
+"use strict";
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  Object.defineProperty(o, k2, {
+    enumerable: true,
+    get: function get() {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  __setModuleDefault(result, mod);
+  return result;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getGeneratedPassword = void 0;
+var handlePassword = __importStar(require("./handlePassword"));
+var calculatePasswordStrength_1 = require("./calculatePasswordStrength");
+var passwordResultElem = document.getElementById("generated-result");
+var strengthPointsElems = document.querySelectorAll("[data-strength-point]");
+var getGeneratedPassword = function getGeneratedPassword(passwordParams, passwordRange) {
+  var passwordStrengthValueElem = strengthPointsElems[0].previousElementSibling;
+  var storedPassword = [];
   var generatedPassword = "";
-  var abc = function abc() {
-    return checkedParams.map(function (param) {
+  var passwordLength = Math.ceil(parseInt(passwordRange.value) / passwordParams.length);
+  var generatePassword = function generatePassword() {
+    return passwordParams.map(function (param) {
       switch (param.id) {
         case "uppercase-letters":
-          arr.push(getUpperCaseLetter());
+          storedPassword.push(getUpperCaseLetter());
           break;
         case "lowercase-letters":
-          arr.push(getLowerCaseLetter());
+          storedPassword.push(getLowerCaseLetter());
           break;
         case "numbers":
-          arr.push(getNumber());
+          storedPassword.push(getNumber());
           break;
         case "symbols":
-          arr.push(getSymbol());
+          storedPassword.push(getSymbol());
           break;
       }
     });
   };
-  var value = Math.ceil(parseInt(getPasswordParams_1.passwordLenghtElem.value) / checkedParams.length);
-  for (var i = 0; i <= value; i++) {
-    abc();
+  for (var i = 1; i <= passwordLength; i++) {
+    generatePassword();
   }
-  function shuffleArray(array) {
-    var _a;
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      _a = [array[j], array[i]], array[i] = _a[0], array[j] = _a[1];
-    }
-  }
-  shuffleArray(arr);
-  generatedPassword = arr.join("").slice(0, parseInt(getPasswordParams_1.passwordLenghtElem.value));
-  printPassword(passwordResultElem, generatedPassword);
-});
+  handlePassword.shufflePassword(storedPassword);
+  generatedPassword = storedPassword.join("").slice(0, parseInt(passwordRange.value));
+  (0, calculatePasswordStrength_1.calculatePasswordStrength)(passwordStrengthValueElem, strengthPointsElems, generatedPassword, passwordParams);
+  handlePassword.printPassword(passwordResultElem, generatedPassword);
+};
+exports.getGeneratedPassword = getGeneratedPassword;
 var getUpperCaseLetter = function getUpperCaseLetter() {
   return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
 };
@@ -262,39 +355,78 @@ var getNumber = function getNumber() {
 var getSymbol = function getSymbol() {
   return String.fromCharCode(Math.floor(Math.random() * 15) + 33);
 };
-var printPassword = function printPassword(element, password) {
-  element.value = password;
-  element.classList.add("generated");
-};
-var copyPassword = function copyPassword(element) {
-  element.select();
-  document.execCommand("copy");
-};
-var passwordEdit = function passwordEdit(element) {
-  element.removeAttribute("readonly");
-  element.nextElementSibling.innerHTML = "\n  <button class=\"generated-result__icon\" data-password-check>\n    <i class=\"fa-solid fa-check\"></i>\n  </button>\n  ";
-};
-var passwordCheck = function passwordCheck(element) {
-  element.setAttribute("readonly", "readonly");
-  element.nextElementSibling.innerHTML = "\n  <button class=\"generated-result__icon\" data-password-copy>\n    <i class=\"fa-solid fa-copy\"></i>\n  </button>\n  <button class=\"generated-result__icon\" data-password-edit>\n    <i class=\"fa-regular fa-pen-to-square\"></i>\n  </button>\n  ";
-};
-resultWrapperElem === null || resultWrapperElem === void 0 ? void 0 : resultWrapperElem.addEventListener("click", function (e) {
-  var element = e.target;
-  element.closest("[data-password-edit]") ? passwordEdit(passwordResultElem) : null;
-  element.closest("[data-password-copy]") ? copyPassword(passwordResultElem) : null;
-  element.closest("[data-password-check]") ? passwordCheck(passwordResultElem) : null;
+},{"./handlePassword":"src/ts/handlePassword.ts","./calculatePasswordStrength":"src/ts/calculatePasswordStrength.ts"}],"src/ts/events.ts":[function(require,module,exports) {
+"use strict";
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  Object.defineProperty(o, k2, {
+    enumerable: true,
+    get: function get() {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
 });
-},{"./getPasswordParams":"src/ts/getPasswordParams.ts"}],"src/index.ts":[function(require,module,exports) {
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  __setModuleDefault(result, mod);
+  return result;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var handlePassword = __importStar(require("./handlePassword"));
+var getPasswordParams_1 = require("./getPasswordParams");
+var generatePassword_1 = require("./generatePassword");
+var resultWrapperElem = document.getElementById("result-wrapper");
+var passwordResultElem = document.getElementById("generated-result");
+var formElem = document.getElementById("password-form");
+var passwordLenghtElem = document.getElementById("password-length");
+passwordLenghtElem.addEventListener("input", function (e) {
+  var target = e.target;
+  if (passwordLenghtElem.previousElementSibling == null) return;
+  passwordLenghtElem.previousElementSibling.textContent = target.value;
+});
+formElem.addEventListener("submit", function (e) {
+  e.preventDefault();
+  var checkedParams = Object.values(getPasswordParams_1.getPasswordParams).filter(function (param) {
+    return param.checked;
+  });
+  if (!checkedParams.length) {
+    return alert("You need to include at least 1 parametr in your generated password");
+  } else {
+    return (0, generatePassword_1.getGeneratedPassword)(checkedParams, passwordLenghtElem);
+  }
+});
+resultWrapperElem.addEventListener("click", function (e) {
+  var element = e.target;
+  element.closest("[data-password-edit]") ? handlePassword.passwordEdit(passwordResultElem) : null;
+  element.closest("[data-password-copy]") ? handlePassword.copyPassword(passwordResultElem) : null;
+  element.closest("[data-password-check]") ? handlePassword.passwordCheck(passwordResultElem) : null;
+});
+},{"./handlePassword":"src/ts/handlePassword.ts","./getPasswordParams":"src/ts/getPasswordParams.ts","./generatePassword":"src/ts/generatePassword.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 require("./main.scss");
-require("./ts/getPasswordParams");
-require("./ts/generatePassword");
+require("./ts/events");
 //https://net-comber.com/charset.html
-},{"./main.scss":"src/main.scss","./ts/getPasswordParams":"src/ts/getPasswordParams.ts","./ts/generatePassword":"src/ts/generatePassword.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./main.scss":"src/main.scss","./ts/events":"src/ts/events.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
