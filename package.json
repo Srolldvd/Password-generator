@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "description": "JavaScript and TypeScript example starter project",
   "scripts": {
-    "predeploy": "parcel build index.html",
     "deploy": "gh-pages -d dist",
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "clean:output": "rimraf dist",
+    "start": "npm run clean:output && parcel index.html",
+    "build": "npm run clean:output && parcel build index.html"
   },
   "dependencies": {
     "parcel-bundler": "^1.6.1",
